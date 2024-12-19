@@ -1,0 +1,144 @@
+\documentclass[journal]{IEEEtran}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{array}
+\usepackage{cite}
+
+\title{Credit Card Fraud Detection Proposal}
+
+\author{
+    \IEEEauthorblockN{Şenol Erdem, Student ID: 14416706852}
+    \IEEEauthorblockA{\textit{Department of Computer Engineering}, \texttt{senolerdem@ogr.eskisehir.edu.tr}}
+    \and
+    \IEEEauthorblockN{Duran Özçelik, Student ID: 14128544032}
+    \IEEEauthorblockA{\textit{Department of Computer Engineering}, \texttt{duran_ozcelik@ogr.eskisehir.edu.tr}}
+}
+
+\begin{document}
+
+\maketitle
+\begin{abstract}
+Detection of fraud through credit cards is one of the most important applications in the financial industry. Fraudulent transactions caused big monetary losses for companies. More importantly, such huge implications warn about the online transaction volumes and the diverse fraud techniques being used, thereby demanding stronger and efficient fraud detection systems. This project explores machine learning models applied directly to the identification of fraudulent transactions associated with credit card accounts, as well as advanced techniques like SMOTE and PCA for class imbalance and high dimensionality, respectively.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Machine Learning, Credit Card Fraud Detection, Random Forest, PCA, SMOTE
+\end{IEEEkeywords}
+
+\section{Introduction}
+Detection of fraud through credit cards is one of the most important applications in the financial industry. Fraudulent transactions caused significant monetary losses for companies. More importantly, such huge implications warn about the online transaction volumes and the diverse fraud techniques being used, thereby demanding stronger and efficient fraud detection systems. This project explores machine learning models applied directly to the identification of fraudulent transactions associated with credit card accounts, as well as advanced techniques like SMOTE and PCA for class imbalance and high dimensionality, respectively.
+
+\section{Proposed Methodology}
+In this project, the following methodology will be adopted:
+
+\subsection{Model Selection}
+For this project, we will be using Logistic Regression, Random Forest, and Decision Tree models. Logistic Regression is preferred for its simplicity and interpretability; it's a strong baseline model. Random Forest handles the problems we have with overfitting and imbalanced datasets. The inclusion of Decision Tree is primarily because it provides easy visualization of decision rules and it helps establish the foundation of Random Forest itself.
+
+\subsection{Implementation Strategy}
+These models shall be executed in Python with related libraries such as scikit-learn, imbalanced-learn and matplotlib. The workflow will include:
+\begin{itemize}
+    \item Preprocessing the dataset by handling missing values, scaling features, and then addressing class imbalance through SMOTE.
+    \item Performing principal component analysis for dimensionality reduction while keeping 95\% of variance intact.
+    \item Splitting the data into training and testing sets.
+    \item Hyperparameter tuning using RandomizedSearchCV for optimal model performance.
+    \item Training the selected models and evaluating their performance using different metrics.
+\end{itemize}
+
+\subsection{Evaluation Metrics}
+The models will be evaluated using:
+\begin{itemize}
+    \item \textbf{Precision:} To measure the percentage of correctly identified frauds among all transactions predicted as fraud.
+    \item \textbf{Recall:} To evaluate the model's ability to detect actual fraudulent transactions.
+    \item \textbf{F1-Score:} To balance precision and recall.
+    \item \textbf{AUC-ROC:} To assess the overall model performance across all classification thresholds.
+    \item \textbf{Precision-Recall Curve:} To evaluate performance in highly imbalanced datasets.
+\end{itemize}
+
+\section{Experiments and Results}
+The experiments involved preprocessing the data, training the models, and evaluating their performance. The key findings are summarized as follows:
+
+\subsection{ROC Curve}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Mlphoto.png}
+    \caption{ROC Curve illustrating the trade-off between True Positive Rate (TPR) and False Positive Rate (FPR). Random Forest achieves the highest AUC, showing superior predictive ability.}
+    \label{fig:roc_curve}
+\end{figure}
+
+\subsection{Feature Importance}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Mlphoto2.png}
+    \caption{Feature importance values for the Random Forest model. PC1 and PC2 contribute the most to the model's predictions.}
+    \label{fig:feature_importance}
+\end{figure}
+
+\subsection{Confusion Matrix}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{MLphoto3.png}
+    \caption{Confusion Matrix for the Random Forest model, showing minimal false positives and false negatives.}
+    \label{fig:confusion_matrix}
+\end{figure}
+
+\subsection{Correlation Heatmap}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{MLphoto4.png}
+    \caption{The Correlation Heatmap visualizes relationships between features after applying PCA. Most features exhibit low correlations, enhancing model efficiency.}
+    \label{fig:heatmap}
+\end{figure}
+
+\section{Code Explanation}
+The code is structured into logical components to ensure modularity and clarity. Below is an explanation of key functions and their roles:
+
+\begin{itemize}
+    \item \textbf{Dataset Loading (\texttt{pd.read\_csv}):} The dataset is loaded using the \texttt{pandas} library. Missing values are checked using \texttt{df.isnull()} and filled with the column mean using \texttt{df.fillna}. This ensures data integrity without loss of information.
+
+    \item \textbf{Data Scaling (\texttt{StandardScaler}):} The \texttt{StandardScaler} from scikit-learn is used to scale the \texttt{Amount} and \texttt{Time} columns, normalizing their distributions and ensuring they do not dominate the model's learning process.
+
+    \item \textbf{Class Balancing (\texttt{SMOTE}):} The \texttt{SMOTE} algorithm from imbalanced-learn generates synthetic samples for the minority class (fraudulent transactions), addressing the class imbalance and improving model performance for minority detection.
+
+    \item \textbf{Dimensionality Reduction (\texttt{PCA}):} PCA reduces the high-dimensional dataset to a smaller set of principal components while retaining 95\% of the variance. This step removes noise and redundancy, optimizing computational efficiency.
+
+    \item \textbf{Train-Test Split (\texttt{train\_test\_split}):} The dataset is split into training and test sets using an 80-20 ratio. This ensures that the model is evaluated on unseen data.
+
+    \item \textbf{Hyperparameter Optimization (\texttt{RandomizedSearchCV}):} RandomizedSearchCV is used for hyperparameter tuning. It iteratively searches for the best parameters for Logistic Regression, Decision Tree, and Random Forest models, optimizing performance metrics such as AUC-ROC.
+
+    \item \textbf{Model Training (\texttt{fit}):} Each model is trained on the preprocessed and balanced dataset using their \texttt{fit} method.
+
+    \item \textbf{Model Evaluation (\texttt{roc\_auc\_score}, \texttt{classification\_report}):} Metrics such as AUC-ROC and precision-recall are calculated to evaluate model performance. The \texttt{classification\_report} provides detailed metrics like precision, recall, and F1-score.
+
+    \item \textbf{Visualization (\texttt{matplotlib}, \texttt{seaborn}):} Visualizations include:
+    \begin{itemize}
+        \item \textbf{ROC Curve:} Shows the trade-off between sensitivity and specificity.
+        \item \textbf{Precision-Recall Curve:} Highlights model performance on imbalanced datasets.
+ 
+
+        \item ROC Curve: Highlights sensitivity-specificity trade-offs.
+        \item Precision-Recall Curve: Evaluates performance on imbalanced datasets.
+    \end{itemize}
+\end{itemize}
+
+\section{Discussion and Conclusion}
+The results indicate that Random Forest outperforms Logistic Regression and Decision Tree models in detecting fraudulent transactions. Future work could incorporate advanced methods like XGBoost and LightGBM, along with anomaly detection approaches, to further improve performance.
+
+
+\section{References}
+\begin{enumerate}
+    \item Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., ... \& Duchesnay, E. (2011). Scikit-learn: Machine Learning in Python. \textit{Journal of Machine Learning Research}, 12, 2825-2830. Available: \url{https://scikit-learn.org/}
+    \item Lemaître, G., Nogueira, F., \& Aridas, C. K. (2017). Imbalanced-learn: A Python Toolbox to Tackle the Curse of Imbalanced Datasets in Machine Learning. \textit{Journal of Machine Learning Research}, 18(17), 1-5. Available: \url{https://imbalanced-learn.org/}
+    \item Kaggle Dataset: Credit Card Fraud Detection. ULB Machine Learning Group. Available: \url{https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud}
+    \item Breiman, L. (2001). Random Forests. \textit{Machine Learning}, 45(1), 5-32. \url{https://doi.org/10.1023/A:1010933404324}
+    \item Kingma, D. P., \& Ba, J. (2014). Adam: A Method for Stochastic Optimization. In \textit{Proceedings of the 3rd International Conference on Learning Representations (ICLR)}. Available: \url{https://arxiv.org/abs/1412.6980}
+    \item Pedregosa, F., Michel, V., \& Duchesnay, E. (2011). Hyperparameter optimization in scikit-learn. Available: \url{https://scikit-learn.org/stable/modules/grid_search.html}
+    \item SMOTE Implementation: N. V. Chawla, K. W. Bowyer, L. O. Hall, and W. P. Kegelmeyer, ``SMOTE: Synthetic Minority Over-sampling Technique,'' \textit{Journal of Artificial Intelligence Research}, vol. 16, pp. 321-357, 2002.
+    \item Shmueli, G. (2010). To Explain or to Predict? \textit{Statistical Science}, 25(3), 289-310. \url{https://doi.org/10.1214/10-STS330}
+    \item Jolliffe, I. T. (2002). \textit{Principal Component Analysis}. Springer Series in Statistics. Springer. \url{https://doi.org/10.1007/b98835}
+\end{enumerate}
+
+
+\end{document}
